@@ -5,8 +5,19 @@ version: 2.1
 jobs:
   build-test: # name of the job
     working_directory: ~/repo # In which directory to run the steps. Will be interpreted as an absolute path.
-    docker: # to use a circle ci pre-built docker file
-      - image: cimg/node:16.15.0 # name of the image to run --> note js version 16.15.0
+    docker:
+      - image: cimg/node:16.15.0
+        environment:
+          DATABASE_URL: postgresql://postgres@localhost/acme_db
+          POSTGRES_USER: postgres
+          POSTGRES_DB: acme_db
+          JWT_SECRET: SuPerSecRetSuPeRSafe!
+      - image: cimg/postgres:14.0
+        environment:
+          POSTGRES_USER: postgres
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD
     steps: # list of single key/value pairs
       - checkout # used to checkoutout the code from the specified directory (working_directory)
       - run: # key --> indicates the step type
