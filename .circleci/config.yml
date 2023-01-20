@@ -8,7 +8,7 @@ jobs:
     docker:
       - image: cimg/node:16.15.0
         environment:
-          DATABASE_URL: postgresql://postgres@localhost/acme_db
+          DATABASE_URL: postgres://localhost/acme_db
           POSTGRES_USER: postgres
           POSTGRES_DB: acme_db
           JWT_SECRET: SuPerSecRetSuPeRSafe!
