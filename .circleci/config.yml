@@ -18,19 +18,19 @@ jobs:
         auth:
           username: mydockerhub-user
           password: $DOCKERHUB_PASSWORD
-      steps:
-            - checkout
-            - run:
-                  name: Install Dependencies
-                  command: npm install
-            - run: sudo apt-get update
-            - run: sudo apt-get install postgresql-client
-            - run:
-                  name: Add database for postgres
-                  command: psql -U postgres -h localhost -p 5432 -c "create database acme_db;"
-            - run:
-                  name: Run Tests
-                  command: npm run test
+    steps:
+      - checkout
+      - run:
+          name: Install Dependencies
+          command: npm install
+      - run: sudo apt-get update
+      - run: sudo apt-get install postgresql-client
+      - run:
+          name: Add database for postgres
+          command: psql -U postgres -h localhost -p 5432 -c "create database acme_db;"
+      - run:
+          name: Run Tests
+          command: npm run test
 
 workflows: # used for orchestrating all jobs
   version: 2.1
