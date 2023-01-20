@@ -8,7 +8,7 @@ jobs:
     docker:
       - image: cimg/node:16.15.0
         environment:
-          DATABASE_URL: postgres://localhost/acme_db
+          DATABASE_URL: postgresql://postgres@localhost/acme_db
           POSTGRES_USER: postgres
           POSTGRES_DB: acme_db
           JWT_SECRET: SuPerSecRetSuPeRSafe!
@@ -18,14 +18,19 @@ jobs:
         auth:
           username: mydockerhub-user
           password: $DOCKERHUB_PASSWORD
-    steps: # list of single key/value pairs
-      - checkout # used to checkoutout the code from the specified directory (working_directory)
-      - run: # key --> indicates the step type
-          name: Install Dependencies # name of the step (not required)
-          command: npm install # defines the command to execute at this step
-      - run:
-          name: Test
-          command: npm run test
+      steps:
+            - checkout
+            - run:
+                  name: Install Dependencies
+                  command: npm install
+            - run: sudo apt-get update
+            - run: sudo apt-get install postgresql-client
+            - run:
+                  name: Add database for postgres
+                  command: psql -U postgres -h localhost -p 5432 -c "create database acme_db;"
+            - run:
+                  name: Run Tests
+                  command: npm run test
 
 workflows: # used for orchestrating all jobs
   version: 2.1
